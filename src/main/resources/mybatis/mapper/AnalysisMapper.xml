@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.pro.mapper.AnalysisMapper" >
+  <resultMap id="BaseResultMap" type="com.hb.pro.bean.Analysis" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="proname" property="proname" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="simpledis" property="simpledis" jdbcType="VARCHAR" />
+    <result column="detaileddis" property="detaileddis" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="DATE" />
+    <result column="updatetime" property="updatetime" jdbcType="DATE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+
+    <association property="project" javaType="com.hb.pro.bean.Project"
+                 column="id" select="com.hb.pro.mapper.ProjectMapper.selectOne">
+    </association>
+
+  </resultMap>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from analysis
+  </select>
+
+  <select id="selectOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from analysis
+    where id=#{id}
+  </select>
+
+
+
+  <select id="showModInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from
+    analysis
+    where
+    id in (select analysis_fk from module)
+  </select>
+
+  <resultMap id="newMap" type="com.hb.pro.bean.Analysis" extends="BaseResultMap">
+    <collection property="modules" ofType="com.hb.pro.bean.Module"
+                column="id" select="com.hb.pro.mapper.ModuleMapper.selectMore">
+    </collection>
+  </resultMap>
+
+  <select id="getAnaInfoAndMod" parameterType="java.lang.Integer" resultMap="newMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from
+    analysis
+    where
+    id=#{id}
+  </select>
+
+
+  <sql id="Base_Column_List" >
+    id, proname, title, simpledis, detaileddis, addtime, updatetime, remark
+  </sql>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.hb.pro.bean.Analysis" >
+    update analysis
+    set proname = #{proname,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      simpledis = #{simpledis,jdbcType=VARCHAR},
+      detaileddis = #{detaileddis,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=DATE},
+      updatetime = #{updatetime,jdbcType=DATE},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="saveInfo" parameterType="com.hb.pro.bean.Analysis" >
+    insert into analysis
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="proname != null" >
+        proname,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="simpledis != null" >
+        simpledis,
+      </if>
+      <if test="detaileddis != null" >
+        detaileddis,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="proname != null" >
+        #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="simpledis != null" >
+        #{simpledis,jdbcType=VARCHAR},
+      </if>
+      <if test="detaileddis != null" >
+        #{detaileddis,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=DATE},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+
+</mapper>

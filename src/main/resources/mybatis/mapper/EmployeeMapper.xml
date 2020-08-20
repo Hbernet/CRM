@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.emp.mapper.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.hb.emp.bean.Employee" >
+    <id column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="ename" property="ename" jdbcType="VARCHAR" />
+    <result column="esex" property="esex" jdbcType="VARCHAR" />
+    <result column="eage" property="eage" jdbcType="INTEGER" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="hiredate" property="hiredate" jdbcType="DATE" />
+    <result column="pnum" property="pnum" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="p_fk" property="pFk" jdbcType="INTEGER" />
+    <result column="d_fk" property="dFk" jdbcType="INTEGER" />
+    <result column="l_fk" property="lFk" jdbcType="INTEGER" />
+    <result column="emppic" property="emppic" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    eid, ename, esex, eage, telephone, hiredate, pnum, username, password, remark, p_fk, 
+    d_fk, l_fk, emppic
+  </sql>
+
+  <select id="login" parameterType="String" resultType="com.hb.emp.bean.Employee">
+    select
+    <include refid="Base_Column_List" />
+    from
+    employee
+    where
+    username=#{name}and password=#{pass}
+  </select>
+
+
+
+  <select id="selectOne" parameterType="java.lang.Integer" resultType="com.hb.emp.bean.Employee">
+    select
+    <include refid="Base_Column_List" />
+    from
+    employee
+    where
+    eid=#{eid}
+  </select>
+
+  <select id="queryAllmana" resultType="com.hb.emp.bean.Employee" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from
+    employee
+    where
+    p_fk=#{pFk}
+  </select>
+
+  <select id="getOthers" parameterType="java.lang.Integer" resultType="com.hb.emp.bean.Employee">
+    select
+    <include refid="Base_Column_List" />
+    from
+    employee
+    where
+    eid  != #{eid}
+  </select>
+
+  <select id="showEmp" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from employee
+  </select>
+
+</mapper>

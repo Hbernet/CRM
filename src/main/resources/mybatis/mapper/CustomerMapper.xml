@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.cus.mapper.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.hb.cus.bean.Customer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="comname" property="comname" jdbcType="VARCHAR" />
+    <result column="companyperson" property="companyperson" jdbcType="VARCHAR" />
+    <result column="comaddress" property="comaddress" jdbcType="VARCHAR" />
+    <result column="comphone" property="comphone" jdbcType="VARCHAR" />
+    <result column="camera" property="camera" jdbcType="VARCHAR" />
+    <result column="present" property="present" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, comname, companyperson, comaddress, comphone, camera, present, remark, addtime
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.hb.cus.bean.CustomerVO">
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    <where>
+    <if test="keyindex==1">
+      comname like #{keyCode}
+    </if>
+    <if test="keyindex==2">
+      companyperson like #{keyCode}
+    </if>
+    </where>
+  </select>
+
+  <select id="queryAll" resultMap="BaseResultMap" parameterType="com.hb.cus.bean.CustomerVO">
+  select
+  <include refid="Base_Column_List" />
+  from customer
+  </select>
+
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from customer
+    where
+    id=#{id}
+  </select>
+
+  <select id="getOthers" parameterType="java.lang.Integer" resultType="com.hb.cus.bean.Customer">
+    select
+    <include refid="Base_Column_List" />
+    from customer
+    where
+    id != #{id}
+  </select>
+
+  <insert id="insert" parameterType="com.hb.cus.bean.Customer" >
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="comname != null" >
+        comname,
+      </if>
+      <if test="companyperson != null" >
+        companyperson,
+      </if>
+      <if test="comaddress != null" >
+        comaddress,
+      </if>
+      <if test="comphone != null" >
+        comphone,
+      </if>
+      <if test="camera != null" >
+        camera,
+      </if>
+      <if test="present != null" >
+        present,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="comname != null" >
+        #{comname,jdbcType=VARCHAR},
+      </if>
+      <if test="companyperson != null" >
+        #{companyperson,jdbcType=VARCHAR},
+      </if>
+      <if test="comaddress != null" >
+        #{comaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="comphone != null" >
+        #{comphone,jdbcType=VARCHAR},
+      </if>
+      <if test="camera != null" >
+        #{camera,jdbcType=VARCHAR},
+      </if>
+      <if test="present != null" >
+        #{present,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="update" parameterType="com.hb.cus.bean.Customer" >
+    update customer
+    <set >
+      <if test="comname != null" >
+        comname = #{comname,jdbcType=VARCHAR},
+      </if>
+      <if test="companyperson != null" >
+        companyperson = #{companyperson,jdbcType=VARCHAR},
+      </if>
+      <if test="comaddress != null" >
+        comaddress = #{comaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="comphone != null" >
+        comphone = #{comphone,jdbcType=VARCHAR},
+      </if>
+      <if test="camera != null" >
+        camera = #{camera,jdbcType=VARCHAR},
+      </if>
+      <if test="present != null" >
+        present = #{present,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="bachDelete" parameterType="java.util.List">
+    delete from customer where id in
+    <foreach collection="list" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>

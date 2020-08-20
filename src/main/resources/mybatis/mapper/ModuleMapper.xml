@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.pro.mapper.ModuleMapper" >
+  <resultMap id="BaseResultMap2" type="com.hb.pro.bean.Module" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="proname" property="proname" jdbcType="VARCHAR" />
+    <result column="analysis_fk" property="analysisFk" jdbcType="INTEGER" />
+    <result column="modname" property="modname" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="simpledis" property="simpledis" jdbcType="VARCHAR" />
+    <result column="detaileddis" property="detaileddis" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+
+    <collection property="analysis" javaType="com.hb.pro.bean.Analysis"
+                column="analysis_fk" select="com.hb.pro.mapper.AnalysisMapper.selectOne">
+    </collection>
+  </resultMap>
+  <select id="selectAll" parameterType="com.hb.pro.bean.ModuleVO" resultMap="BaseResultMap2">
+    select
+    m.*
+    from module m,project p,analysis a
+    <where>
+      m.analysis_fk=a.id
+      and
+      a.id=p.pid
+      <if test="keyindex==1">
+        p.pname  like #{keyCode}
+      </if>
+      <if test="keyindex==2">
+        a.title like #{keyCode}
+      </if>
+      <if test="keyindex==3">
+        m.modname like #{keyCode}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectOne" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from module
+    where
+    id=#{id}
+  </select>
+
+  <select id="selectMore" resultType="com.hb.pro.bean.Module">
+    select
+    <include refid="Base_Column_List" />
+    from module
+    where
+    analysis_fk=#{id}
+  </select>
+
+  <sql id="Base_Column_List" >
+    id, proname, analysis_fk, modname, level, simpledis, detaileddis, remark
+  </sql>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.hb.pro.bean.Module" >
+    update module
+    <set >
+      <if test="proname != null" >
+        proname = #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="analysisFk != null" >
+        analysis_fk = #{analysisFk,jdbcType=INTEGER},
+      </if>
+      <if test="modname != null" >
+        modname = #{modname,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="simpledis != null" >
+        simpledis = #{simpledis,jdbcType=VARCHAR},
+      </if>
+      <if test="detaileddis != null" >
+        detaileddis = #{detaileddis,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hb.pro.bean.Module" >
+    update module
+    set proname = #{proname,jdbcType=VARCHAR},
+      analysis_fk = #{analysisFk,jdbcType=INTEGER},
+      modname = #{modname,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      simpledis = #{simpledis,jdbcType=VARCHAR},
+      detaileddis = #{detaileddis,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.hb.pro.bean.Module" >
+    insert into module
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="proname != null" >
+        proname,
+      </if>
+      <if test="analysisFk != null" >
+        analysis_fk,
+      </if>
+      <if test="modname != null" >
+        modname,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="simpledis != null" >
+        simpledis,
+      </if>
+      <if test="detaileddis != null" >
+        detaileddis,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="proname != null" >
+        #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="analysisFk != null" >
+        #{analysisFk,jdbcType=INTEGER},
+      </if>
+      <if test="modname != null" >
+        #{modname,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="simpledis != null" >
+        #{simpledis,jdbcType=VARCHAR},
+      </if>
+      <if test="detaileddis != null" >
+        #{detaileddis,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>
